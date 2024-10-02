@@ -107,7 +107,7 @@ class ResponseGenerator {
       ]);
 
 
-      const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
+      // const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
       console.log(`chathistory: ${recentChatHistory}`);
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
@@ -141,8 +141,8 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
         count_block = 0;
       }
       console.log("Response: ", gptResponse);
-      await this.memoryManager.writeToHistory(`${userDetails.name}: ${userInput}\n`, this.userId);
-      await this.memoryManager.writeToHistory(`Assistant: ${gptResponse}`, this.userId);
+      // await this.memoryManager.writeToHistory(`${userDetails.name}: ${userInput}\n`, this.userId);
+      // await this.memoryManager.writeToHistory(`Assistant: ${gptResponse}`, this.userId);
       return gptResponse;
 
     } catch (error) {
