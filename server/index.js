@@ -1044,15 +1044,15 @@ app.post('/api/messages', verifyToken, async (req, res) => {
 
    
     await connection.execute(sqluser, valuesuser);
-      // Save the message to MongoDB using Mongoose
-      const newMessage = new Message({
-        userId,
-        sender,
-        text,
-        timestamp,
-      });
+    //   // Save the message to MongoDB using Mongoose
+    //   const newMessage = new Message({
+    //     userId,
+    //     sender,
+    //     text,
+    //     timestamp,
+    //   });
 
-      const savedMessage = await newMessage.save();
+    //   const savedMessage = await newMessage.save();
     // Initialize ResponseGenerator with userId
     const responseGenerator = new ResponseGenerator(userId);
 
@@ -1074,15 +1074,15 @@ app.post('/api/messages', verifyToken, async (req, res) => {
 
     await connection.execute(sqlbot, valuesbot);
    
-    // Save the message to MongoDB using Mongoose
-    const newResponseMessage = new Message({
-      userId,
-      sender :'chatbot',
-      text: responseMessage,
-      timestamp,
-    });
+    // // Save the message to MongoDB using Mongoose
+    // const newResponseMessage = new Message({
+    //   userId,
+    //   sender :'chatbot',
+    //   text: responseMessage,
+    //   timestamp,
+    // });
 
-    const savedResponseMessage = await newResponseMessage.save();
+    // const savedResponseMessage = await newResponseMessage.save();
     // Respond with the generated message
     res.json(responseMessage);
     connection.release();
