@@ -236,9 +236,7 @@ const ChatPage = () => {
 
           {isMenuOpen && (
             <div className="menu-content">
-              <Link to="/bot-profile" className="menu-item" onClick={closeMenu}>{botName} Profile</Link>
               <Link to="/user-profile" className="menu-item" onClick={closeMenu}>Your Profile</Link>
-              <Link to="/settings" className="menu-item" onClick={closeMenu}>Settings</Link>
               <button className="menu-item" onClick={clearChatHandle}>Clear Chat</button>
               <button className="menu-item" onClick={handleLogout}>Log Out</button>
             </div>

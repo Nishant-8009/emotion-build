@@ -170,18 +170,6 @@ const BotProfilePage = ({ bot }) => {
     />
 </div>
 
-<div className="input-box">
-    <label>Special Dates:</label>
-    <textarea
-        name="specialDates"
-        placeholder="Special Dates (e.g., anniversaries, birthdays)"
-        value={formData.specialDates}
-        onChange={onhandleChange}
-        required
-    />
-</div>
-
-
 
 <div className="input-box">
     <label>Is Studying:</label>
@@ -199,16 +187,6 @@ const BotProfilePage = ({ bot }) => {
 
 {formData.isStudying === 'true' && (
     <>
-        <div className="input-box">
-            <label>Degree:</label>
-            <textarea
-                name="degree"
-                placeholder="Degree"
-                value={formData.degree}
-                onChange={onhandleChange}
-                required
-            />
-        </div>
         <div className="input-box">
             <label>Institution:</label>
             <textarea
@@ -234,60 +212,6 @@ const BotProfilePage = ({ bot }) => {
 </div>
 )}
 
-<div className="input-box">
-    <label>Favourite Topics:</label>
-    <textarea
-        name="favouriteTopics"
-        placeholder="Favourite Topics"
-        value={formData.favouriteTopics}
-        onChange={onhandleChange}
-        required
-    />
-</div>
-
-<div className="input-box">
-    <label>Preferred Communication Times:</label>
-    <textarea
-        name="preferredCommunicationTimes"
-        placeholder="Preferred Communication Times"
-        value={formData.preferredCommunicationTimes}
-        onChange={onhandleChange}
-        required
-    />
-</div>
-
-<div className="input-box">
-    <label>Health and Wellbeing Details:</label>
-    <textarea
-        name="healthWellbeingDetails"
-        placeholder="Health and Wellbeing Details"
-        value={formData.healthWellbeingDetails}
-        onChange={onhandleChange}
-        required
-    />
-</div>
-
-<div className="input-box">
-    <label>Daily Routine Preferences:</label>
-    <textarea
-        name="dailyRoutinePreferences"
-        placeholder="Daily Routine Preferences"
-        value={formData.dailyRoutinePreferences}
-        onChange={onhandleChange}
-        required
-    />
-</div>
-
-<div className="input-box">
-    <label>Goals and Aspirations:</label>
-    <textarea
-        name="goalAspirations"
-        placeholder="Goals and Aspirations"
-        value={formData.goalAspirations}
-        onChange={onhandleChange}
-        required
-    />
-</div>
 
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             <button onClick={handleSave}>Save</button>

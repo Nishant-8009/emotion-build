@@ -108,7 +108,7 @@ class ResponseGenerator {
 
       // console.log("Fetched userDetails:", userDetails);
 
-      const recentChatHistory = "";
+      const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
 
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
