@@ -34,7 +34,7 @@ const upload = multer({storage: storage,
 // };
 // app.use(cors(corsOptions));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://bytebond-self.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', 'https://lexi-pearl.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', true); // If using credentials like cookies
