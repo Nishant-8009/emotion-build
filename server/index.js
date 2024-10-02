@@ -1059,7 +1059,7 @@ app.post('/api/messages/server', verifyToken, async (req, res) => {
     // Fetch user and bot information concurrently
     const [userDetails, concernInfo] = await Promise.all([
       responseGenerator.fetchUserInfo(),
-      responseGenerator.fetchRecentConerns()
+      // responseGenerator.fetchRecentConerns()
     ]);
 
     // Generate the bot response
