@@ -91,7 +91,7 @@ const ChatPage = () => {
 
       try {
         console.log(newMessage);
-        const response = await fetch('https://emotion-build-server-1.vercel.app/api/messages', {
+        const response = await fetch('https://emotion-build-server-1.vercel.app/api/messages/server', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ const ChatPage = () => {
           </button>
 
           {isMenuOpen && (
-            <div className="menu-content">
+            <div className="menu-content" style={{color: 'white'}}>
               <Link to="/user-profile" className="menu-item" onClick={closeMenu}>Your Profile</Link>
               <button className="menu-item" onClick={clearChatHandle}>Clear Chat</button>
               <button className="menu-item" onClick={handleLogout}>Log Out</button>

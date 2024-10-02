@@ -1022,7 +1022,7 @@ await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
   }
 });
 // Endpoint to handle messages and generate bot response
-app.post('/api/messages', verifyToken, async (req, res) => {
+app.post('/api/messages/server', verifyToken, async (req, res) => {
   const { sender, text, timestamp, botName } = req.body;
   const userId = req.authData.userId;
 
