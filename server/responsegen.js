@@ -113,10 +113,6 @@ class ResponseGenerator {
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
 
-      const sentimentPrompt = `Analyze the following text for emotional sentiment and return whether it is positive, negative, or neutral:
-      ${userInput}
-      do the sentiment analysis and also tell the wieght of diffenrent emotions
-      `;
       const preamble = `"You are an empathetic virtual assistant dedicated to providing emotional support and guidance. Your primary goal is to listen and respond with care to the feelings and concerns of the user. You understand that discussing feelings can be difficult, and you aim to create a safe space for open dialogue. 
 
 You are aware of the following about the user:
@@ -137,7 +133,7 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
       Now, respond with empathy and understanding.`;
       
       const promptInput = `${finalPrompt}\nRespond to the user in a supportive manner, validating their feelings and offering encouragement.`;
-            const gptResponse = await this.generateResponse(promptInput);
+      const gptResponse = await this.generateResponse(promptInput);
 
       if (gptResponse.trim() === '') {
         count_block++;
@@ -206,21 +202,6 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
             if (detailsRows.length > 0) {
                 const userInfo = {
                     name: user.username,
-                    age: detailsRows[0].userAge,
-                    gender: detailsRows[0].userGender,
-                    hobbies: detailsRows[0].userHobbies,
-                    companyName: detailsRows[0].companyName,
-                    isStudying: detailsRows[0].isStudying,
-                    degree: detailsRows[0].degree,
-                    institution: detailsRows[0].institution,
-                    companyLocation: detailsRows[0].companyLocation,
-                    relationshipStatusContext: detailsRows[0].relationshipStatusContext,
-                    favoriteTopicsDiscuss: detailsRows[0].favoriteTopics,
-                    dailyRoutinePreferences: detailsRows[0].dailyRoutinePreferences,
-                    healthWellbeingDetails: detailsRows[0].healthWellbeingDetails,
-                    goalsAspirations: detailsRows[0].goalsAspirations,
-                    preferredCommunicationTimes: detailsRows[0].preferredCommunicationTimes,
-                    specialDatesAnniversaries: detailsRows[0].specialDates
                 };
                 // console.log('Fetched userInfo:', userInfo);
                 return userInfo;
