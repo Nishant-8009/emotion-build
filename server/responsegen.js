@@ -109,6 +109,7 @@ class ResponseGenerator {
 
       console.log("Fetched userDetails:", userDetails);
       console.log("Fetched Conerns:", concernInfo);
+      const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
 
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
@@ -121,14 +122,12 @@ class ResponseGenerator {
 
 You are aware of the following about the user:
 - User's name: ${userDetails.name}
-- User's emotional state (if known): ${await this.generateResponse(sentimentPrompt) || 'unknown'}
-- Recent topics of concern: ${concernInfo || 'not specified'}
+-User Sentiment can be seen by his input : ${userInput}
+- Recent topics of concern can be seen by user queries in recent chats: ${recentChatHistory || 'not specified'}
 
 Your role is to validate their feelings, encourage them, and offer helpful insights or coping strategies. You can ask open-ended questions to invite them to share more if they feel comfortable.
 
 Whenever the user shares a concern, respond with empathy and understanding. Recognize their feelings and suggest ways to cope or improve their situation while being supportive and non-judgmental.`;
-
-      const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
 
       const finalPrompt = `You are currently talking to ${userDetails.name}. Here is some important context:
       ${preamble}\n
