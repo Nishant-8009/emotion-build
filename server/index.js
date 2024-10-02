@@ -27,23 +27,23 @@ const upload = multer({storage: storage,
       fieldSize: 10 * 1024 * 1024, // Increase the limit as needed (10 MB here)
   }});
 
-// const corsOptions = {
-//   origin: '*',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-// };
-// app.use(cors(corsOptions));
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://emotion-build.vercel.app/');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', true); // If using credentials like cookies
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200); // Respond to OPTIONS requests
-  } else {
-    next(); // Continue with other routes
-  }
-});
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'https://emotion-build.vercel.app');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.setHeader('Access-Control-Allow-Credentials', true); // If using credentials like cookies
+//   if (req.method === 'OPTIONS') {
+//     res.sendStatus(200); // Respond to OPTIONS requests
+//   } else {
+//     next(); // Continue with other routes
+//   }
+// });
 app.use(bodyParser.json());
 
 // JWT Secret Key (this should be a secure, random string in production)
