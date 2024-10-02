@@ -14,16 +14,16 @@ Lexi is designed to understand and respond to students' emotional needs through 
 
 5. **Privacy and Security**: Given the sensitivity of mental health conversations, Lexi prioritizes user privacy and ensures all interactions are secure and confidential.
 
-## Evaluation Criteria Fit
+<!-- ## Evaluation Criteria Fit -->
 
-### Technical Feasibility
+## Technical Feasibility
 - **Gemini APIs**: Lexi leverages Gemini APIs for natural language understanding and sentiment analysis, making it technically feasible. The integration of these APIs addresses potential technical challenges by providing robust backend support for understanding user inputs.
   
-### Scalability
+## Scalability
 - **User Capacity**: The solution is designed to scale efficiently to handle multiple users concurrently. Using cloud-based services, Lexi can maintain performance even as user demand increases.
 - **Potential Bottlenecks**: While scalability is a focus, monitoring response times and server load will be crucial in ensuring a seamless experience for all users.
 
-### User Experience
+## User Experience
 - **Ease of Use**: Lexi’s user-friendly design and conversational interface ensure that students can easily access support.
 - **Engaging Interaction**: By providing empathetic and contextually relevant responses, Lexi aims to create a positive and engaging user experience.
 
