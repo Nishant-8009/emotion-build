@@ -108,7 +108,7 @@ class ResponseGenerator {
 
 
       const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
-      console.log(recentChatHistory);
+      console.log(`chathistory: ${recentChatHistory}`);
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
 
@@ -132,7 +132,7 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
       Now, respond with empathy and understanding.`;
       
       const promptInput = `${finalPrompt}\nRespond to the user in a supportive manner, validating their feelings and offering encouragement.`;
-      console.log(promptInput);
+      console.log(`prompt: ${promptInput}`);
       const gptResponse = await this.generateResponse(promptInput);
 
       if (gptResponse.trim() === '') {
