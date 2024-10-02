@@ -108,7 +108,7 @@ class ResponseGenerator {
 
 
       const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
-
+      console.log(recentChatHistory);
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
 
@@ -132,6 +132,7 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
       Now, respond with empathy and understanding.`;
       
       const promptInput = `${finalPrompt}\nRespond to the user in a supportive manner, validating their feelings and offering encouragement.`;
+      console.log(promptInput);
       const gptResponse = await this.generateResponse(promptInput);
 
       if (gptResponse.trim() === '') {
@@ -216,46 +217,6 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
         console.error('Error fetching user info:', error);
         throw error;
     }
-}
-
-async fetchRecentConerns(limit = 5) { // Added limit parameter
-  try {
-      console.log('Fetching recent concerns for userId:', this.userId);
-      const queryPromise = util.promisify(this.db.query).bind(this.db); // Promisify the query method
-
-      // Fetch recent concerns with a specified limit
-      const rows = await queryPromise('SELECT * FROM `concern-info` WHERE userId = ? ORDER BY createdAt DESC LIMIT ?', [this.userId, limit]);
-
-      if (rows.length > 0) {
-          return rows.map(row => ({
-              concern: row.concern, // Assuming the concern is stored in a column named 'concern'
-              timestamp: row.createdAt // Assuming there's a timestamp column to track when it was created
-          }));
-      } else {
-          return []; // Return an empty array if no concerns found
-      }
-  } catch (error) {
-      console.error('Error fetching recent concerns:', error);
-      throw error;
-  }
-}
-
-async storeConcern(concern){
-  try {
-    console.log('Fetching bot info for userId:', this.userId);
-    const queryPromise = util.promisify(this.db.query).bind(this.db); // Promisify the query method
-
-    const result = await queryPromise('INSERT INTO `concern-info` (userId, concern) VALUES (?, ?)', [this.userId, concern]);
-
-    if (result.affectedRows > 0) {
-      console.log('Concern stored successfully:', concern);
-    } else {
-      throw new Error('Failed to store concern');
-    }
-} catch (error) {
-    console.error('Error fetching bot info:', error);
-    throw error;
-}
 }
 }
 
