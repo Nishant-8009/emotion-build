@@ -680,7 +680,7 @@ await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
 // API to handle saving details to bot-info and user-info
 app.post('/save-details', verifyToken, async (req, res) => {
   const userId = req.authData.userId;
-  const { chatbotName, chatbotGender,chatbotAge, chatbotCountry,chatbotIsStudying,chatbotDegree,chatbotCompany, userAge, userGender, userInterests, userIsStudying,userDegree,userCompany, specialDates } = req.body;
+  const { userAge, userGender, userInterests, userIsStudying,userDegree,userCompany, specialDates } = req.body;
 
   try {
     // Get connection from pool
@@ -691,12 +691,12 @@ app.post('/save-details', verifyToken, async (req, res) => {
       await connection.beginTransaction();
 
       // Query to insert/update bot-info
-      const botInfoSql = `
-        INSERT INTO \`bot-info\` (userId, chatbotName, chatbotGender, age, country, isStudying, degree, companyName)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE chatbotName = VALUES(chatbotName), chatbotGender = VALUES(chatbotGender), age= VALUES(age), country = VALUES(country), isStudying = VALUES(isStudying), degree = VALUES(degree), companyName = VALUES(companyName)  
-      `;
-      await connection.execute(botInfoSql, [userId, chatbotName, chatbotGender, chatbotAge, chatbotCountry, chatbotIsStudying, chatbotDegree, chatbotCompany]);
+      // const botInfoSql = `
+      //   INSERT INTO \`bot-info\` (userId, chatbotName, chatbotGender, age, country, isStudying, degree, companyName)
+      //   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      //   ON DUPLICATE KEY UPDATE chatbotName = VALUES(chatbotName), chatbotGender = VALUES(chatbotGender), age= VALUES(age), country = VALUES(country), isStudying = VALUES(isStudying), degree = VALUES(degree), companyName = VALUES(companyName)  
+      // `;
+      // await connection.execute(botInfoSql, [userId, chatbotName, chatbotGender, chatbotAge, chatbotCountry, chatbotIsStudying, chatbotDegree, chatbotCompany]);
 
       
       // Query to insert/update user-info
@@ -714,21 +714,21 @@ app.post('/save-details', verifyToken, async (req, res) => {
       // Release connection back to the pool
       connection.release();
 
-      // Upsert bot-info in MongoDB
-    const botFilter = { userId: userId };
-    const botUpdate = {
-      chatbotName,
-      chatbotGender,
-      age: chatbotAge,
-      country: chatbotCountry,
-      isStudying: chatbotIsStudying,
-      degree: chatbotDegree,
-      companyName: chatbotCompany,
-    };
-    const botOptions = { new: true, upsert: true }; // Create if doesn't exist and return the new updated document
+    //   // Upsert bot-info in MongoDB
+    // const botFilter = { userId: userId };
+    // const botUpdate = {
+    //   chatbotName,
+    //   chatbotGender,
+    //   age: chatbotAge,
+    //   country: chatbotCountry,
+    //   isStudying: chatbotIsStudying,
+    //   degree: chatbotDegree,
+    //   companyName: chatbotCompany,
+    // };
+    // const botOptions = { new: true, upsert: true }; // Create if doesn't exist and return the new updated document
 
-    // Perform the upsert operation for bot-info
-    const botInfoResult = await BotInfo.findOneAndUpdate(botFilter, botUpdate, botOptions);
+    // // Perform the upsert operation for bot-info
+    // const botInfoResult = await BotInfo.findOneAndUpdate(botFilter, botUpdate, botOptions);
 
     // Upsert user-info in MongoDB
     const userFilter = { userId: userId };

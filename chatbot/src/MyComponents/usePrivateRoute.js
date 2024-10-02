@@ -11,7 +11,7 @@ const usePrivateRoute = () => {
       navigate('/'); // Redirect to login if no token
     } else {
       // Check access to the chat page
-      fetch('https://bot-build-server.vercel.app/check-access', {
+      fetch('https://emotion-build-server-1.vercel.app/check-access', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${jwtToken}`,
