@@ -105,7 +105,7 @@ button {
 button:hover {
     background: #f0f0f0;
     transform: translateY(-2px); 
-    color: pink;
+    color: navy;
 }
 
 @media (max-width: 600px) {

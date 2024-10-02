@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ChatPage.css';
 import { Link } from 'react-router-dom';
 import { RiArrowRightSLine } from "react-icons/ri";
@@ -10,18 +10,14 @@ import user from '../user.png';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 
-
 const ChatPage = () => {
   usePrivateRoute(); // Ensure authentication before rendering component
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [botName, setBotName] = useState("Your Bot");
+  const [botName, setBotName] = useState("Assistant"); // Default bot name
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [botImage, setbotImage] = useState(null);
-
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
   const emojiPickerRef = useRef(null);
 
   useEffect(() => {
@@ -50,11 +46,13 @@ const ChatPage = () => {
         console.error('Error fetching messages:', error);
       }
     };
+
     const handleClickOutside = (event) => {
       if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
         setShowEmojiPicker(false);
       }
     };
+
     fetchMessages();
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -67,37 +65,7 @@ const ChatPage = () => {
     const chatBox = document.querySelector('.chat-box');
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    fetchBotName();
-
   }, [messages]);
-
-  const fetchBotName = async () => {
-    try {
-      const token = localStorage.getItem('jwtToken');
-      if (!token) {
-        throw new Error('JWT token not found!');
-      }
-
-      const response = await fetch(`https://emotion-build-server-1.vercel.app/api/get_bot_name`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setBotName(data.botName); // Update bot name state based on fetched data
-      setbotImage(data.base64Image);
-      console.log(data);
-    } catch (error) {
-      console.error('Error fetching bot name:', error);
-    }
-  };
-
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
@@ -107,11 +75,10 @@ const ChatPage = () => {
     if (input.trim()) {
       const token = localStorage.getItem('jwtToken');
 
-    if (!token) {
-      console.error('JWT token not found!');
-      // Handle the absence of token, e.g., redirect to login page or show an error message
-      return;
-    }
+      if (!token) {
+        console.error('JWT token not found!');
+        return;
+      }
       const newMessage = {
         sender: 'user',
         text: input,
@@ -155,21 +122,12 @@ const ChatPage = () => {
     }
   };
 
-
-  let displayImage
-  if(botImage!=null){
-     displayImage = `data:image/jpeg;base64,${botImage}`;
-  }else{
-     displayImage = user;
-  }
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleSendMessage();
     }
   };
-
-  
 
   const formatDate = (date) => {
     if (isToday(date)) {
@@ -207,79 +165,60 @@ const ChatPage = () => {
     
     if (!token) {
       console.error('JWT token not found!');
-      // Handle the absence of token, e.g., redirect to login page or show an error message
       navigate('/login');
       return;
     }
-    try{
-    // Make API call to log out using fetch
-    const response = await fetch('https://emotion-build-server-1.vercel.app/api/clearchat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Include the JWT token
+    try {
+      const response = await fetch('https://emotion-build-server-1.vercel.app/api/clearchat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        window.location.reload();
+        console.log('Chat cleared successfully');
+      } else {
+        const errorMessage = await response.text();
+        console.error(`Failed to clear chat: ${errorMessage}`);
       }
-    });
-    if (response.ok) {
-      // Handle successful response
-      window.location.reload();
-      console.log('Chat cleared successfully');
-      // Optionally, add any post-clearance logic or UI feedback here
-    } else {
-      // Handle non-successful response
-      const errorMessage = await response.text();
-      console.error(`Failed to clear chat: ${errorMessage}`);
-      // Optionally, add UI feedback for the failure
+    } catch (error) {
+      console.error('Error clearing chat:', error);
     }
-  } catch (error) {
-    console.error('Error clearing chat:', error);
-    // Optionally, add UI feedback for the error
-  }
   };
-  // Handle the logout process
-const handleLogout = async () => {
-  try {
-    const token = localStorage.getItem('jwtToken');
-    
-    if (!token) {
-      console.error('JWT token not found!');
-      // Handle the absence of token, e.g., redirect to login page or show an error message
-      navigate('/login');
-      return;
-    }
-    
-    // Make API call to log out using fetch
-    const response = await fetch('https://emotion-build-server-1.vercel.app/api/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Include the JWT token
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+      
+      if (!token) {
+        console.error('JWT token not found!');
+        navigate('/login');
+        return;
       }
-    });
+      
+      const response = await fetch('https://emotion-build-server-1.vercel.app/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
-    if (!response.ok) {
-      // Handle unexpected response status
-      throw new Error(`Logout failed! HTTP status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Logout failed! HTTP status: ${response.status}`);
+      }
+
+      console.log('Logged out successfully');
+      localStorage.removeItem('jwtToken');
+      closeMenu();
+      navigate('/login');
+
+    } catch (error) {
+      console.error('Logout failed:', error);
     }
-
-    // If logout is successful
-    console.log('Logged out successfully');
-    
-    // Remove the JWT token from local storage
-    localStorage.removeItem('jwtToken');
-    
-
-    // Close the menu and navigate to the login page
-    closeMenu();
-    navigate('/login');
-
-  } catch (error) {
-    // Handle error during the API call
-    console.error('Logout failed:', error);
-  }
-};
-
-
+  };
 
   return (
     <div className="chat-container">
@@ -287,8 +226,7 @@ const handleLogout = async () => {
 
       <div className="Navbar">
         <div className="bot-info">
-        <img src={displayImage} alt="Bot" className="bot-image" />
-        
+          <img src={user} alt="Bot" className="bot-image" />
           <span className="bot-name">{botName}</span>
         </div>
         <div className="menu">
@@ -332,8 +270,7 @@ const handleLogout = async () => {
       </div>
 
       <div className="input-container">
-      <div className="emoji-button" onClick={toggleEmojiPicker}>
-          {/* Smiling face icon */}
+        <div className="emoji-button" onClick={toggleEmojiPicker}>
           <span role="img" aria-label="Smile">😊</span>
         </div>
         {showEmojiPicker && (
@@ -348,10 +285,7 @@ const handleLogout = async () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <button className="send-button" onClick={handleSendMessage}>
-          <RiArrowRightSLine size={32} className="send-icon"  />
-        </button>
-
+        <button className="send-button" onClick={handleSendMessage}>Send</button>
       </div>
     </div>
   );
