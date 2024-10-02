@@ -108,7 +108,7 @@ class ResponseGenerator {
       ]);
 
       console.log("Fetched userDetails:", userDetails);
-      console.log("Fetched Conerns:", companionInfo);
+      console.log("Fetched Conerns:", concernInfo);
 
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
