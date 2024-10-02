@@ -40,7 +40,7 @@ const ForgotPasswordPage = () => {
 
         try {
             // Send OTP request to backend
-            const response = await fetch('https://bot-build-server.vercel.app/api/send-otp', {
+            const response = await fetch('https://emotion-build-server.vercel.app/api/send-otp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const ForgotPasswordPage = () => {
 
         try {
             // Verify OTP and update password
-            const response = await fetch('https://bot-build-server.vercel.app/api/verify-otp', {
+            const response = await fetch('https://emotion-build-server.vercel.app/api/verify-otp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

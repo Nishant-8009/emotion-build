@@ -33,7 +33,7 @@ const ChatPage = () => {
           throw new Error('JWT token not found!');
         }
 
-        const response = await fetch('https://bot-build-server.vercel.app/api/fetch_messages', {
+        const response = await fetch('https://emotion-build-server.vercel.app/api/fetch_messages', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -78,7 +78,7 @@ const ChatPage = () => {
         throw new Error('JWT token not found!');
       }
 
-      const response = await fetch(`https://bot-build-server.vercel.app/api/get_bot_name`, {
+      const response = await fetch(`https://emotion-build-server.vercel.app/api/get_bot_name`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -124,7 +124,7 @@ const ChatPage = () => {
 
       try {
         console.log(newMessage);
-        const response = await fetch('https://bot-build-server.vercel.app/api/messages', {
+        const response = await fetch('https://emotion-build-server.vercel.app/api/messages', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ const ChatPage = () => {
     }
     try{
     // Make API call to log out using fetch
-    const response = await fetch('https://bot-build-server.vercel.app/api/clearchat', {
+    const response = await fetch('https://emotion-build-server.vercel.app/api/clearchat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -249,7 +249,7 @@ const handleLogout = async () => {
     }
     
     // Make API call to log out using fetch
-    const response = await fetch('https://bot-build-server.vercel.app/api/logout', {
+    const response = await fetch('https://emotion-build-server.vercel.app/api/logout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

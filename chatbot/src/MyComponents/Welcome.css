@@ -66,8 +66,8 @@
 /* Hover effect for login and signup buttons */
 .login-button:hover, .signup-button:hover {
   background: #fff;
-  color: pink;
-  border-color: pink; /* Change border color to blue */
+  color: navy;
+  border-color: navy; /* Change border color to blue */
   transform: translateY(-2px); /* Slight lift effect */
 }
 
