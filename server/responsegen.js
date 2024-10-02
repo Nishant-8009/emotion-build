@@ -102,13 +102,12 @@ class ResponseGenerator {
     try {
       console.log('Generating empathetic response for message:', message);
       
-      const [userDetails, concernInfo] = await Promise.all([
+      const [userDetails] = await Promise.all([
         this.fetchUserInfo(),
-        this.fetchRecentConerns()
       ]);
 
       console.log("Fetched userDetails:", userDetails);
-      console.log("Fetched Conerns:", concernInfo);
+
       const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
 
       const userInput = `${message}`;
