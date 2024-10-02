@@ -21,7 +21,7 @@ const OtpVerification = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://emotion-build-server.vercel.app/verifyotp', {
+            const response = await fetch('https://emotion-build-server-1.vercel.app/verifyotp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

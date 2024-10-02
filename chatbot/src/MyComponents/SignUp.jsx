@@ -27,7 +27,7 @@ export const SignUp = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://emotion-build-server.vercel.app/signup', {
+            const response = await fetch('https://emotion-build-server-1.vercel.app/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

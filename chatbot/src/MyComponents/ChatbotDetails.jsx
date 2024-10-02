@@ -66,7 +66,7 @@ const ChatbotDetails = () => {
             // Get JWT token from local storage or context
             const token = localStorage.getItem('jwtToken'); // Adjust as per your auth implementation
 
-            const response = await fetch('https://emotion-build-server.vercel.app/save-details', {
+            const response = await fetch('https://emotion-build-server-1.vercel.app/save-details', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

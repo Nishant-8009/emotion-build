@@ -13,7 +13,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://emotion-build-server.vercel.app/login', {
+      const response = await fetch('https://emotion-build-server-1.vercel.app/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

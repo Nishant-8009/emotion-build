@@ -31,7 +31,7 @@ const BotProfilePage = ({ bot }) => {
         const token = localStorage.getItem('jwtToken'); // Adjust as per your auth implementation
         const fetchBotData = async () => {
             try {
-                const response = await fetch(`https://emotion-build-server.vercel.app/api/user-info/`,{
+                const response = await fetch(`https://emotion-build-server-1.vercel.app/api/user-info/`,{
                     method: 'GET',
                     headers: {
 
@@ -106,7 +106,7 @@ const BotProfilePage = ({ bot }) => {
             // Get JWT token from local storage or context
             const token = localStorage.getItem('jwtToken'); // Adjust as per your auth implementation
 
-            const response = await fetch('https://emotion-build-server.vercel.app/api/user-details-update/', {
+            const response = await fetch('https://emotion-build-server-1.vercel.app/api/user-details-update/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
