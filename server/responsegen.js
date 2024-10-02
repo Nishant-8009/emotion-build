@@ -146,22 +146,7 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
       } else {
         count_block = 0;
       }
-      const concernPrompt = `You are a language model trained to analyze user messages and identify emotional concerns. 
-
-Please read the following message from a user:
-
-${userInput}
-
-Your task is to extract the key concern or emotional issue expressed by the user in their message. The output should be a clear, concise statement of the concern without any additional commentary.
-
-If no clear concern is present, respond with "No concern identified."
-
-Extracted Concern:
-`; 
-      const concern = await this.generateResponse(concernPrompt);
-      await this.memoryManager.writeToHistory(`${userDetails.name}: ${userInput}\n`, this.userId);
-      await this.memoryManager.writeToHistory(`Virtual Assistant: ${gptResponse}`, this.userId);
-      await storeConcern(concern);
+      
       return gptResponse;
 
     } catch (error) {
