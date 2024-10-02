@@ -1,0 +1,114 @@
+/* MyComponents/LoginForm.css */
+
+.wrapper {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 30px 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: white; 
+  height:60vh;
+}
+
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: white; 
+}
+
+
+.wrapper .input-box {
+  position: relative;
+  margin-bottom: 25px; 
+  height:40px;
+}
+
+.wrapper .input-box input {
+  width: 100%;
+  height: 45px;
+  border: none;
+  outline: none;
+  
+  font-size: 16px;
+  border-radius: 25px;
+  
+}
+
+.wrapper .input-box input::placeholder {
+  color: rgba(0, 0, 0, 0.5); 
+}
+
+.wrapper .input-box .icon {
+  position: absolute;
+  top: 70%; 
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  /* color: black; */
+   color: rgba(0, 0, 0, 0.5); 
+}
+
+
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  margin-bottom: 2px; 
+}
+
+.remember-forgot label {
+  font-size: 14px;
+  color  :#fff; 
+}
+
+.remember-forgot a {
+  font-size: 14px;
+  color:#fff; 
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline;
+}
+
+.wrapper button {
+  width: 100%;
+  height: 50px;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.3s ease;
+  margin-top: 6px;
+}
+.wrapper button:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px); /* Slight lift effect */
+  color: pink;
+}
+
+.register-link {
+  text-align:center;
+  margin-top: 20px;
+}
+
+.register-link p {
+  font-size: 14px;
+  color: white; 
+}
+
+.register-link a {
+  color:white;
+  
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

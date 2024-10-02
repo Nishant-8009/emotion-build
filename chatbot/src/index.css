@@ -1,0 +1,66 @@
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+.container {
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 20px; 
+}
+
+
+@media (max-width: 768px) {
+ 
+  body {
+      font-size: 14px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .container {
+      padding: 10px;
+  }
+}
+
+/* WebKit-based browsers (Chrome, Safari) */
+/* Track */
+::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+  height: 4px;
+  margin: 1px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar handle */
+  border-radius: 5px; /* Rounded corners of the scrollbar handle */
+}
+
+/* Remove scrollbar buttons */
+::-webkit-scrollbar-button {
+  display: none; /* Hide scrollbar buttons */
+}
+
+/* Firefox */
+/* Width of scrollbar */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent; /* Color of the scrollbar handle */
+}
+
+/* Handle */
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar handle */
+  border-radius: 5px; /* Rounded corners of the scrollbar handle */
+}
+
+/* Handle */
+.scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar handle */
+  border-radius: 5px; /* Rounded corners of the scrollbar handle */
+}
