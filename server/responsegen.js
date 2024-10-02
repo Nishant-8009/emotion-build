@@ -108,7 +108,7 @@ class ResponseGenerator {
 
 
       // const recentChatHistory = await this.memoryManager.readLatestHistory(this.userId);
-      console.log(`chathistory: ${recentChatHistory}`);
+      // console.log(`chathistory: ${recentChatHistory}`);
       const userInput = `${message}`;
       // const attributes = companionInfo.companionGender === 'male' ? maleAttributes : femaleAttributes;
 
@@ -117,7 +117,7 @@ class ResponseGenerator {
 You are aware of the following about the user:
 - User's name: ${userDetails.name}
 -User Sentiment can be seen by his input : ${userInput}
-- Recent topics of concern can be seen by user queries in recent chats: ${recentChatHistory || 'not specified'}
+
 
 Your role is to validate their feelings, encourage them, and offer helpful insights or coping strategies. You can ask open-ended questions to invite them to share more if they feel comfortable.
 
@@ -127,8 +127,7 @@ Whenever the user shares a concern, respond with empathy and understanding. Reco
       ${preamble}\n
       Below is the user's message:
       ${userInput}\n
-      Based on your previous conversations, here is a summary of their recent interactions (take context, don’t copy-paste):
-      ${recentChatHistory}\n
+      
       Now, respond with empathy and understanding.`;
       
       const promptInput = `${finalPrompt}\nRespond to the user in a supportive manner, validating their feelings and offering encouragement.`;
