@@ -487,13 +487,13 @@ app.get('/check-access', verifyToken, async (req, res) => {
 
     try {
       // Query to check if userId exists in bot-info table
-      const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
-      const [botResults] = await connection.execute(botInfoSql, [userId]);
+      // const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
+      // const [botResults] = await connection.execute(botInfoSql, [userId]);
 
-      if (botResults.length > 0) {
-        // User found in bot-info
-        return res.status(200).json({ accessGranted: true });
-      }
+      // if (botResults.length > 0) {
+      //   // User found in bot-info
+      //   return res.status(200).json({ accessGranted: true });
+      // }
 
       // Query to check if userId exists in user-info table
       const userInfoSql = 'SELECT * FROM `user-info` WHERE userId = ?';
@@ -567,14 +567,14 @@ async function checkChatAccess(req, res, next) {
 
     try {
       // Query to check if userId exists in bot-info table
-      const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
-      const [botResults] = await connection.execute(botInfoSql, [userId]);
+      // const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
+      // const [botResults] = await connection.execute(botInfoSql, [userId]);
 
-      if (botResults.length > 0) {
-        // User found in bot-info, grant access
-        next();
-        return;
-      }
+      // if (botResults.length > 0) {
+      //   // User found in bot-info, grant access
+      //   next();
+      //   return;
+      // }
 
       // Query to check if userId exists in user-info table
       const userInfoSql = 'SELECT * FROM `user-info` WHERE userId = ?';
