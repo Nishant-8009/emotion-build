@@ -14,16 +14,9 @@ const BotProfilePage = ({ bot }) => {
         userAge: '',
         userGender: '',
         userHobbies: '',
-        specialDates: '',
         companyName: '',
         isStudying: '', 
-        degree:'',
-        favouriteTopics:'',
-        preferredCommunicationTimes:'',
-        healthWellbeingDetails: '',
         institution:'',
-        dailyRoutinePreferences: '',
-        goalAspirations:'',
     });
 
     useEffect(()=>{
@@ -45,16 +38,9 @@ const BotProfilePage = ({ bot }) => {
                         userAge: data.userAge || '',
                         userGender: data.userGender || '',
                         userHobbies: data.userHobbies ||'',
-                        favouriteTopics: data.favoriteTopics ||'',
-                        specialDates: data.specialDates ||'',
                         companyName: data.companyName || '',
                         isStudying: data.isStudying || '',
-                        degree: data.degree || '',
-                        institution: data.institution ||'',
-                        healthWellbeingDetails: data.healthWellbeingDetails ||'',
-                        dailyRoutinePreferences: data.dailyRoutinePreferences ||'',
-                        preferredCommunicationTimes: data.preferredCommunicationTimes || '',
-                        goalAspirations: data.goalsAspirations ||''
+                        institution: data.institution ||''
                     });
                     
                 } else {
@@ -91,16 +77,9 @@ const BotProfilePage = ({ bot }) => {
         formDataToSend.append('userAge', formData.userAge);
         formDataToSend.append('userGender', formData.userGender);
         formDataToSend.append('userHobbies', formData.userHobbies);
-        formDataToSend.append('specialDates', formData.specialDates);
         formDataToSend.append('companyName', formData.companyName);
         formDataToSend.append('isStudying', formData.isStudying);
-        formDataToSend.append('degree', formData.degree);
-        formDataToSend.append('favouriteTopics', formData.favouriteTopics);
-        formDataToSend.append('preferredCommunicationTimes', formData.preferredCommunicationTimes);
-        formDataToSend.append('healthWellbeingDetails', formData.healthWellbeingDetails);
         formDataToSend.append('institution', formData.institution);
-        formDataToSend.append('dailyRoutinePreferences', formData.dailyRoutinePreferences);
-        formDataToSend.append('goalAspirations', formData.goalAspirations);
         
         try {
             // Get JWT token from local storage or context

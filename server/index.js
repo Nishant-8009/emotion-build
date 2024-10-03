@@ -12,10 +12,7 @@ import ResponseGenerator from './responsegen.js';
 import fs from 'fs';
 import multer from 'multer';
 import db from './db.js';
-import User from './models/User.js';
-import BotInfo from './models/BotInfo.js';
-import UserInfo from './models/UserInfo.js';
-import Message from './models/Message.js';
+
 dotenv.config(); // Load API key from .env file
 
 const app = express();
@@ -27,12 +24,6 @@ const upload = multer({storage: storage,
       fieldSize: 10 * 1024 * 1024, // Increase the limit as needed (10 MB here)
   }});
 
-// const corsOptions = {
-//   origin: '*',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-// };
-// app.use(cors(corsOptions));
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://emotion-build.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -101,7 +92,7 @@ async function sendOtpEmail(email, subject, message) {
 
   // Email options
   let mailOptions = {
-      from: `"ByteBond" <${process.env.GMAIL_USER}>`, // Sender address
+      from: `"Lexi" <${process.env.GMAIL_USER}>`, // Sender address
       to: email, // List of recipients
       subject: subject, // Subject line
       text: message, // Plain text body
@@ -125,20 +116,20 @@ app.post('/api/send-otp', async(req,res)=>{
 
     
     try {
-     const  subject = 'Reset Your ByteBond Password';
+     const  subject = 'Reset Your Lexi Password';
    const  messageforgot = `
 Dear User,
         
-We received a request to reset your password for your ByteBond account. To proceed with resetting your password, please use the following One-Time Password (OTP):
+We received a request to reset your password for your Lexi account. To proceed with resetting your password, please use the following One-Time Password (OTP):
 
 ${otp}
 If you did not request to reset your password, please ignore this email. If you have any concerns or need further assistance, feel free to contact our support team at jmimp45@gmail.com.
 
-Thank you for being a valued member of ByteBond!
+Thank you for being a valued member of Lexi!
 
 Best regards,
 
-ByteBond Team
+Lexi Team
 `;
       await sendOtpEmail(email, subject, messageforgot);
       userData[email] = { otp, password: null };
@@ -256,11 +247,11 @@ app.post('/signup', async (req, res) => {
     // Store temporarily in memory
     tempUserDetails = { userId, username,fullName, email, password: hashedPassword, phoneNumber, otp , nonhash: password};
     // Send OTP to email
-  const subject = 'Your ByteBond OTP Verification Code';
+  const subject = 'Your Lexi OTP Verification Code';
     const message = `
 Dear User,
 
-Welcome to ByteBond!
+Welcome to Lexi!
 
 To complete your registration and verify your email address, please use the following One-Time Password (OTP):
 
@@ -268,11 +259,11 @@ ${otp}
 
 If you did not request to reset your password, please ignore this email. If you have any concerns or need further assistance, feel free to contact our support team at jmimp45@gmail.com.
 
-Thank you for being a valued member of ByteBond!
+Thank you for being a valued member of Lexi!
 
 Best regards,
 
-ByteBond Team
+Lexi Team
 `;
     try {
       await sendOtpEmail(email, subject, message);
@@ -307,8 +298,7 @@ app.post('/verifyotp', async (req, res) => {
 
         // Commit transaction
         await connection.commit();
-        const newUser = new User({ userId, username, fullName, email, password: nonhash, phoneNumber, otp });
-        await newUser.save();
+        
         // Issue JWT token
         const token = jwt.sign({ userId, username, fullName, email }, JWT_SECRET, { expiresIn: '1w' });
         
@@ -377,19 +367,17 @@ app.post('/login', async (req, res) => {
         { expiresIn: '1w' }
       );
 
-      // Check if userId exists in bot-info and user-info tables
-      const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
+ 
       const userInfoSql = 'SELECT * FROM `user-info` WHERE userId = ?';
 
-      const [botResults] = await connection.execute(botInfoSql, [user.userId]);
       const [userResults] = await connection.execute(userInfoSql, [user.userId]);
 
       // Determine navigation based on results
-      if (botResults.length === 0 && userResults.length === 0) {
-        // Neither in bot-info nor user-info
+      if (userResults.length === 0) {
+        // Not in user-info
         return res.status(200).json({ message: 'Login successful', token, navigate: '/chatbot-details' });
       } else {
-        // Found in bot-info or user-info
+        // Found in user-info
         return res.status(200).json({ message: 'Login successful', token, navigate: '/chat' });
       }
     } catch (error) {
@@ -442,20 +430,9 @@ app.post('/api/logout', verifyToken, async (req, res) => {
 // Endpoint to handle fetching previous messages
 app.get('/api/fetch_messages', verifyToken, async (req, res) => {
   const userId = req.authData.userId;
-  const lastOnlineTime = new Date().toISOString();
-        
   
   try {
-    const userfilter = { userId: userId };
-    const userupdate = {
-      lastOnlineTime,
-    };
-    const useroptions = { new: true, upsert: true }; // Create if doesn't exist and return the new updated document
 
-    // Perform the upsert operation for bot-info
-     await User.findOneAndUpdate(userfilter, userupdate, useroptions);
-    
-    await User.findOneAndUpdate({ userId: userId }, { lastOnlineTime: lastOnlineTime });
     // Fetch messages from MySQL
     const sql = 'SELECT * FROM messages WHERE userId = ? ORDER BY timestamp ASC';
     const messages = await executeQuery(sql, [userId]);
@@ -486,15 +463,7 @@ app.get('/check-access', verifyToken, async (req, res) => {
     const connection = await pool.getConnection();
 
     try {
-      // Query to check if userId exists in bot-info table
-      // const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
-      // const [botResults] = await connection.execute(botInfoSql, [userId]);
-
-      // if (botResults.length > 0) {
-      //   // User found in bot-info
-      //   return res.status(200).json({ accessGranted: true });
-      // }
-
+      
       // Query to check if userId exists in user-info table
       const userInfoSql = 'SELECT * FROM `user-info` WHERE userId = ?';
       const [userResults] = await connection.execute(userInfoSql, [userId]);
@@ -566,16 +535,7 @@ async function checkChatAccess(req, res, next) {
     const connection = await pool.getConnection();
 
     try {
-      // Query to check if userId exists in bot-info table
-      // const botInfoSql = 'SELECT * FROM `bot-info` WHERE userId = ?';
-      // const [botResults] = await connection.execute(botInfoSql, [userId]);
-
-      // if (botResults.length > 0) {
-      //   // User found in bot-info, grant access
-      //   next();
-      //   return;
-      // }
-
+ 
       // Query to check if userId exists in user-info table
       const userInfoSql = 'SELECT * FROM `user-info` WHERE userId = ?';
       const [userResults] = await connection.execute(userInfoSql, [userId]);
@@ -626,56 +586,6 @@ app.get('/chat', verifyToken, checkChatAccess, (req, res) => {
   res.send('Welcome to the chat page!');
 });
 
-app.get('/api/get_bot_name', verifyToken, async(req, res) =>{
-  const userId = req.authData.userId;
-
-  try {
-    // Get connection from pool
-    const connection = await pool.getConnection();
-
-    try {
-      // Query to fetch bot name from bot-info table based on userId
-      const sql = 'SELECT * FROM `bot-info` WHERE userId = ?';
-      const [results] = await connection.execute(sql, [userId]);
-
-      if (results.length > 0) {
-        const botName = results[0].chatbotName;
-        const botImage = results[0].image;
-        const base64Image = botImage ? Buffer.from(botImage).toString('base64') : null;
-        res.status(200).json({botName, base64Image});
-      } else {
-        res.status(404).json({ error: 'Bot name not found for the user' });
-      }
-    } catch (error) {
-      const subject ='Internal Server Error';
-      const message =`
-Dear Nishant,
-
-Error arrised to userId ${userId}
-
-${error}
-`;
-await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
-      console.error('Error fetching bot name:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } finally {
-      // Release connection back to the pool
-      connection.release();
-    }
-  } catch (error) {
-    const subject ='Database Error';
-      const message =`
-Dear Nishant,
-
-Error arrised to userId ${userId}
-
-${error}
-`;
-await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
-    console.error('Error establishing database connection:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
 
 // API to handle saving details to bot-info and user-info
 app.post('/save-details', verifyToken, async (req, res) => {
@@ -690,16 +600,6 @@ app.post('/save-details', verifyToken, async (req, res) => {
       // Begin transaction
       await connection.beginTransaction();
 
-      // Query to insert/update bot-info
-      // const botInfoSql = `
-      //   INSERT INTO \`bot-info\` (userId, chatbotName, chatbotGender, age, country, isStudying, degree, companyName)
-      //   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      //   ON DUPLICATE KEY UPDATE chatbotName = VALUES(chatbotName), chatbotGender = VALUES(chatbotGender), age= VALUES(age), country = VALUES(country), isStudying = VALUES(isStudying), degree = VALUES(degree), companyName = VALUES(companyName)  
-      // `;
-      // await connection.execute(botInfoSql, [userId, chatbotName, chatbotGender, chatbotAge, chatbotCountry, chatbotIsStudying, chatbotDegree, chatbotCompany]);
-
-      
-      // Query to insert/update user-info
       const userInfoSql = `
         INSERT INTO \`user-info\` (userId, userAge, userGender, userHobbies, isStudying , degree, companyName, specialDates)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -713,38 +613,6 @@ app.post('/save-details', verifyToken, async (req, res) => {
 
       // Release connection back to the pool
       connection.release();
-
-    //   // Upsert bot-info in MongoDB
-    // const botFilter = { userId: userId };
-    // const botUpdate = {
-    //   chatbotName,
-    //   chatbotGender,
-    //   age: chatbotAge,
-    //   country: chatbotCountry,
-    //   isStudying: chatbotIsStudying,
-    //   degree: chatbotDegree,
-    //   companyName: chatbotCompany,
-    // };
-    // const botOptions = { new: true, upsert: true }; // Create if doesn't exist and return the new updated document
-
-    // // Perform the upsert operation for bot-info
-    // const botInfoResult = await BotInfo.findOneAndUpdate(botFilter, botUpdate, botOptions);
-
-    // Upsert user-info in MongoDB
-    const userFilter = { userId: userId };
-    const userUpdate = {
-      userAge,
-      userGender,
-      userHobbies: userInterests, // Assuming `userInterests` is an array of strings
-      isStudying: userIsStudying,
-      degree: userDegree,
-      companyName: userCompany,
-      specialDates, // Assuming `specialDates` is an array of dates or strings
-    };
-    const userOptions = { new: true, upsert: true };
-
-    // Perform the upsert operation for user-info
-    const userInfoResult = await UserInfo.findOneAndUpdate(userFilter, userUpdate, userOptions);
 
       // Send success response
       res.status(200).json({ message: 'Details saved successfully' });
@@ -781,39 +649,7 @@ await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
   }
 });
 
-//fetching existing bot data
-app.get('/api/bot-info/' ,verifyToken, async(req,res) => {
-  const userId = req.authData.userId;
-  try {
-    // Fetch messages from MySQL
-    const sql = 'SELECT * FROM `bot-info` WHERE userId = ?';
-    const botdata = await executeQuery(sql, [userId]);
-    // Assuming `image` is stored as a Buffer in the database
-    const bot = botdata[0];
-    const base64Image = bot.image ? Buffer.from(bot.image).toString('base64') : null;
 
-    // Construct response object including image if available
-    const response = {
-        ...bot,
-        image: base64Image,
-    };
-
-    res.status(200).json(response);
-  } catch (error) {
-    const subject ='Internal Server Error';
-      const message =`
-Dear Nishant,
-
-Error arrised to userId ${userId}
-
-${error}
-`;
-await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
-    console.error('Error fetching data:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-
-});
 //fetching existing user data
 app.get('/api/user-info/' ,verifyToken, async(req,res) => {
   const userId = req.authData.userId;
@@ -843,16 +679,9 @@ app.post('/api/user-details-update/', verifyToken, async (req, res) => {
       userAge, 
       userGender, 
       userHobbies, 
-      specialDates, 
       companyName, 
       isStudying, 
-      degree, 
-      favouriteTopics, 
-      preferredCommunicationTimes, 
-      healthWellbeingDetails, 
-      institution, 
-      dailyRoutinePreferences, 
-      goalAspirations 
+      institution
   } = req.body;
 
   try {
@@ -866,16 +695,9 @@ app.post('/api/user-details-update/', verifyToken, async (req, res) => {
               userAge = ?, 
               userGender = ?, 
               userHobbies = ?, 
-              specialDates = ?, 
               companyName = ?, 
               isStudying = ?, 
-              degree = ?, 
-              favoriteTopics = ?, 
-              preferredCommunicationTimes = ?, 
-              healthWellbeingDetails = ?, 
-              institution = ?, 
-              dailyRoutinePreferences = ?, 
-              goalsAspirations = ? 
+              institution = ?
           WHERE userId = ?
       `;
 
@@ -884,44 +706,14 @@ app.post('/api/user-details-update/', verifyToken, async (req, res) => {
           userAge,
           userGender,
           userHobbies,
-          specialDates,
           companyName,
           isStudying,
-          degree,
-          favouriteTopics,
-          preferredCommunicationTimes,
-          healthWellbeingDetails,
           institution,
-          dailyRoutinePreferences,
-          goalAspirations,
           userId
       ]);
 
       // Release the connection back to the pool
       connection.release();
-// Define the update object
-const update = {
-  userAge,
-  userGender,
-  userHobbies,
-  specialDates,
-  companyName,
-  isStudying,
-  degree,
-  favoriteTopics: favouriteTopics,
-  preferredCommunicationTimes,
-  healthWellbeingDetails,
-  institution,
-  dailyRoutinePreferences,
-  goalsAspirations: goalAspirations,
-};
-
-// Upsert user-info in MongoDB
-const filter = { userId: userId };
-const options = { new: true, upsert: true }; // Create if doesn't exist and return the new updated document
-
-// Perform the upsert operation for user-info
-const userInfoResult = await UserInfo.findOneAndUpdate(filter, update, options);
 
       if (result.affectedRows > 0) {
           res.status(200).json({ message: 'User details updated successfully.' });
@@ -943,84 +735,6 @@ await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
   }
 });
 
-
-//upadting bot data 
-app.post('/api/bot-details-update/', verifyToken, upload.single('botImage'), async (req,res)=>{
-  const userId = req.authData.userId;
-  const { botName, botGender, chatbotAge,chatbotDegree,chatbotIsStudying,chatbotCompany,chatbotCountry, hobbies,skills,Personality,Institution } = req.body;
-  const botImage = req.file;
-  try {
-    // Get connection from pool
-    const connection = await pool.getConnection();
-    // const data = fs.readFileSync(botImage.path);
-     // If botImage is available, use its buffer
-     const imageBuffer = botImage ? botImage.buffer : null;
-    // SQL query to update bot info
-    const sqlQuery = 'UPDATE `bot-info` SET chatbotName = ?, chatbotGender = ?,age =?,country =?,companyName =?,isStudying =?,degree =?,institution= ?,hobbies =?,skills =?,personality =?, image = ? WHERE userId = ?';
-
-    
-    // Execute the query with the data
-    const [result] = await connection.query(sqlQuery, [
-      botName,
-      botGender,
-      chatbotAge,
-      chatbotCountry,
-      chatbotCompany,
-      chatbotIsStudying,
-      chatbotDegree, 
-      Institution,
-      hobbies,
-      skills,
-      Personality,
-      imageBuffer, // botImage.buffer contains the image as a BLOB
-      userId
-    ]);
-
-    // Release the connection back to the pool
-    connection.release();
-
-     // Define the update object
-     const update = {
-      chatbotName: botName,
-      chatbotGender: botGender,
-      age: chatbotAge,
-      country: chatbotCountry,
-      companyName: chatbotCompany,
-      isStudying: chatbotIsStudying,
-      degree: chatbotDegree,
-      institution: Institution,
-      hobbies: hobbies.split(',').map(item => item.trim()), // Assuming hobbies is a comma-separated string
-      skills: skills.split(',').map(item => item.trim()), // Assuming skills is a comma-separated string
-      personality: Personality,
-      image: botImage ? botImage.buffer.toString('base64') : null, // Convert buffer to base64 string
-    };
-
-    // Upsert bot-info in MongoDB
-    const filter = { userId: userId };
-    const options = { new: true, upsert: true }; // Create if doesn't exist and return the new updated document
-
-    // Perform the upsert operation for bot-info
-    const botInfoResult = await BotInfo.findOneAndUpdate(filter, update, options);
-
-    if (result.affectedRows > 0) {
-      res.status(200).json({ message: 'Bot details updated successfully.' });
-    } else {
-      res.status(404).json({ message: 'User ID not found or no changes made.' });
-    }
-  } catch (error) {
-    const subject ='Internal Server Error';
-      const message =`
-Dear Nishant,
-
-Error arrised to userId ${userId}
-
-${error}
-`;
-await sendOtpEmail('nishantmalhotra8009@gmail.com', subject, message);
-    console.error('Error updating bot details:', error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-});
 // Endpoint to handle messages and generate bot response
 app.post('/api/messages/server', verifyToken, async (req, res) => {
   const { sender, text, timestamp, botName } = req.body;
@@ -1044,22 +758,13 @@ app.post('/api/messages/server', verifyToken, async (req, res) => {
 
    
     await connection.execute(sqluser, valuesuser);
-    //   // Save the message to MongoDB using Mongoose
-    //   const newMessage = new Message({
-    //     userId,
-    //     sender,
-    //     text,
-    //     timestamp,
-    //   });
 
-    //   const savedMessage = await newMessage.save();
     // Initialize ResponseGenerator with userId
     const responseGenerator = new ResponseGenerator(userId);
 
     // Fetch user and bot information concurrently
-    const [userDetails, concernInfo] = await Promise.all([
+    const [userDetails] = await Promise.all([
       responseGenerator.fetchUserInfo(),
-      // responseGenerator.fetchRecentConerns()
     ]);
 
     // Generate the bot response
@@ -1073,16 +778,7 @@ app.post('/api/messages/server', verifyToken, async (req, res) => {
     const valuesbot = [userId, 'chatbot', responseMessage, nowISO];
 
     await connection.execute(sqlbot, valuesbot);
-   
-    // // Save the message to MongoDB using Mongoose
-    // const newResponseMessage = new Message({
-    //   userId,
-    //   sender :'chatbot',
-    //   text: responseMessage,
-    //   timestamp,
-    // });
 
-    // const savedResponseMessage = await newResponseMessage.save();
     // Respond with the generated message
     res.json(responseMessage);
     connection.release();

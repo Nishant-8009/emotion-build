@@ -15,7 +15,7 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [botName, setBotName] = useState("Assistant"); // Default bot name
+  const [botName] = useState("Assistant"); // Default bot name
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef(null);
@@ -283,7 +283,7 @@ const ChatPage = () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <button className="send-button" onClick={handleSendMessage}>Send</button>
+        <button className="send-button" onClick={handleSendMessage}><RiArrowRightSLine/></button>
       </div>
     </div>
   );
