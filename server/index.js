@@ -9,9 +9,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import nodemailer from 'nodemailer'
 import ResponseGenerator from './responsegen.js';
-import fs from 'fs';
 import multer from 'multer';
-import db from './db.js';
 
 dotenv.config(); // Load API key from .env file
 
