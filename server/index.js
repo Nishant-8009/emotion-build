@@ -590,7 +590,7 @@ app.get('/chat', verifyToken, checkChatAccess, (req, res) => {
 // API to handle saving details to bot-info and user-info
 app.post('/save-details', verifyToken, async (req, res) => {
   const userId = req.authData.userId;
-  const { userAge, userGender, userInterests, userIsStudying,userDegree,userCompany, specialDates } = req.body;
+  const { userAge, userGender, userIsStudying , userInstitution, userCompany} = req.body;
 
   try {
     // Get connection from pool
@@ -601,12 +601,12 @@ app.post('/save-details', verifyToken, async (req, res) => {
       await connection.beginTransaction();
 
       const userInfoSql = `
-        INSERT INTO \`user-info\` (userId, userAge, userGender, userHobbies, isStudying , degree, companyName, specialDates)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO \`user-info\` (userId, userAge, userGender, isStudying , institution, companyName)
+        VALUES (?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE userAge = VALUES(userAge), userGender = VALUES(userGender),
-                                userHobbies = VALUES(userHobbies), isStudying = VALUES(isStudying), degree= VALUES(degree) , companyName= VALUES(companyName),specialDates = VALUES(specialDates)
+                                isStudying = VALUES(isStudying), institution= VALUES(institution) , companyName= VALUES(companyName)
       `;
-      await connection.execute(userInfoSql, [userId, userAge, userGender, userInterests, userIsStudying, userDegree, userCompany, specialDates]);
+      await connection.execute(userInfoSql, [userId, userAge, userGender, userIsStudying, userInstitution, userCompany]);
 
       // Commit transaction
       await connection.commit();

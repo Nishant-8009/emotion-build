@@ -9,11 +9,9 @@ const ChatbotDetails = () => {
     const [formData, setFormData] = useState({
         userAge: '',
         userGender: '',
-        userInterests: '',
         userIsStudying: '',
-        userDegree: '',
+        userInstitution: '',
         userCompany: '',
-        specialDates: ''
     });
 
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
@@ -95,24 +93,6 @@ const ChatbotDetails = () => {
                             </select>
                         </div>
                         <div className="input-box">
-                            <textarea
-                                name="userInterests"
-                                placeholder="Your Interests and Hobbies"
-                                value={formData.userInterests}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="input-box">
-                            <textarea
-                                name="specialDates"
-                                placeholder="Special Dates (Format= `Event: <Date>,`)"
-                                value={formData.specialDates}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="input-box">
                             <select
                                 name="userIsStudying"
                                 value={formData.userIsStudying}
@@ -127,9 +107,9 @@ const ChatbotDetails = () => {
                         {formData.userIsStudying === 'true' && (
                             <div className="input-box">
                                 <textarea
-                                    name="userDegree"
-                                    placeholder="Your Degree"
-                                    value={formData.userDegree}
+                                    name="userInstitution"
+                                    placeholder="Your Institution"
+                                    value={formData.userInstitution}
                                     onChange={handleChange}
                                     required
                                 />
