@@ -160,11 +160,6 @@ app.post('/api/verify-otp', async (req, res) => {
               // Update query to change the user's password
               const query = 'UPDATE users SET password = ? WHERE email = ?';
               const [results] = await connection.execute(query, [hashedPassword, email]);
-              const result = await User.findOneAndUpdate(
-                { email: email }, // Find user by email
-                { password: password }, // Update the password
-                { new: true } // Return the updated document
-              );
               if (results.affectedRows > 0) {
                   // Respond with success message if the update was successful
                   res.status(200).json({ message: 'Password updated successfully' });
